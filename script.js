@@ -88,10 +88,10 @@ document.addEventListener('DOMContentLoaded', () => {
       slug: 'poster-design',
       desc: 'Bold, high-contrast posters built to grab attention at a glance, in print or on-screen.',
       samples: [
-        { icon: '🎵', label: 'Music night poster', grad: 'linear-gradient(150deg,#8b2ff7,#4f2f9e)' },
-        { icon: '🏋️', label: 'Fitness event poster', grad: 'linear-gradient(150deg,#b026ff,#6d1fc9)' },
-        { icon: '🎬', label: 'Film screening poster', grad: 'linear-gradient(150deg,#4f7cff,#2a4bb8)' },
-        { icon: '🎉', label: 'Festival announcement', grad: 'linear-gradient(150deg,#22d3ee,#1a7f94)' },
+        { icon: '🏖️', label: 'Beach vacation travel poster', grad: 'linear-gradient(150deg,#1a7f9e,#0b3d5c)' },
+        { icon: '🚴', label: 'Cycling event poster', grad: 'linear-gradient(150deg,#f5b400,#1a3f8f)' },
+        { icon: '🪔', label: 'Diwali festival greeting poster', grad: 'linear-gradient(150deg,#b8860b,#3a0f4a)' },
+        { icon: '🎤', label: 'Live band concert poster', grad: 'linear-gradient(150deg,#f2b90c,#1a1a1a)' },
       ]
     },
     {
@@ -99,10 +99,10 @@ document.addEventListener('DOMContentLoaded', () => {
       slug: 'flyer-design',
       desc: 'Clear, persuasive flyers that balance strong visuals with easy-to-scan information.',
       samples: [
-        { icon: '🏋️', label: 'Fitness campaign flyer', grad: 'linear-gradient(150deg,#22d3ee,#4f7cff)' },
-        { icon: '☕', label: 'Café promo flyer', grad: 'linear-gradient(150deg,#4f7cff,#8b2ff7)' },
-        { icon: '🛍️', label: 'Sale announcement flyer', grad: 'linear-gradient(150deg,#8b2ff7,#b026ff)' },
-        { icon: '🎓', label: 'Event flyer, workshop', grad: 'linear-gradient(150deg,#22d3ee,#0e7c6b)' },
+        { icon: '🌋', label: 'Volcano adventure expedition flyer', grad: 'linear-gradient(150deg,#ff6a00,#7a1c00)' },
+        { icon: '🏕️', label: 'Aurora camping festival flyer', grad: 'linear-gradient(150deg,#1a936f,#0b2545)' },
+        { icon: '🌿', label: 'Forest wellness retreat flyer', grad: 'linear-gradient(150deg,#2f5233,#1b3022)' },
+        { icon: '🤿', label: 'Underwater photography workshop flyer', grad: 'linear-gradient(150deg,#0f6fb0,#062a4a)' },
       ]
     },
     {
@@ -322,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     img.dataset.tried = String(tried);
-    img.src = `assets/samples/${img.dataset.base}.${CF_IMG_EXTS[tried]}`;
+    img.src = `assets/${img.dataset.base}.${CF_IMG_EXTS[tried]}`;
   };
 
   /* ---------------------------------------------------------
@@ -366,7 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.removeItem(CF_STORAGE_PREFIX + key);
     img.dataset.tried = '0';
     img.style.display = 'block';
-    img.src = `assets/samples/${img.dataset.base}.jpg`;
+    img.src = `assets/${img.dataset.base}.jpg`;
   };
 
   /* ---------------------------------------------------------
@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try{ return localStorage.getItem(CF_STORAGE_PREFIX + key); }
                 catch(e){ return null; }
               })();
-              const initialSrc = saved || `assets/samples/${key}.jpg`;
+              const initialSrc = saved || `assets/${key}.jpg`;
               return `
               <div class="cf-card" style="background:${sample.grad}">
                 <img
