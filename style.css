@@ -33,6 +33,7 @@
 *, *::before, *::after{ box-sizing: border-box; }
 
 html{
+  font-size: 18.5px;
   scroll-behavior: smooth;
   scroll-padding-top: var(--nav-h);
 }
@@ -42,6 +43,7 @@ body{
   background: var(--bg);
   color: var(--text);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-style: italic;     
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -423,8 +425,8 @@ button{ font-family: inherit; cursor: pointer; }
 
 .hero-stats{ display: flex; gap: 40px; flex-wrap: wrap; }
 .stat{ display: flex; flex-direction: column; gap: 4px; }
-.stat-num{ font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; }
-.stat-label{ font-size: 0.82rem; color: var(--muted-2); max-width: 14ch; }
+.stat-num{ font-family: 'Space Grotesk', sans-serif; font-size: 3.4rem; font-weight: 700; }
+.stat-label{ font-size: 1.15rem; color: var(--muted-2); max-width: 14ch; }
 
 /* --- 3D rotating logo --- */
 .hero-visual{
