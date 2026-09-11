@@ -213,16 +213,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const pricing = [
     {
-      name: 'Starter',
-      amount: '₹499',
+      name: 'Beginner',
+      amount: '$5',
       unit: '/ design',
       desc: 'For a single, focused piece — a poster, flyer or one social media post.',
       features: ['1 design concept', '1 revision round', 'Print & web-ready file', '2–3 day delivery'],
       featured: false
     },
     {
-      name: 'Brand kit',
-      amount: '₹2,999',
+      name: 'Standard',
+      amount: '$10',
       unit: '/ package',
       desc: 'A small identity package for a brand that\'s just getting started.',
       features: ['Logo design', 'Business card & letterhead', '3 revision rounds', 'Source files included', '5–7 day delivery'],
@@ -230,8 +230,8 @@ document.addEventListener('DOMContentLoaded', () => {
       badge: 'Most requested'
     },
     {
-      name: 'Full studio',
-      amount: '₹6,999',
+      name: 'Pro',
+      amount: '$15',
       unit: '/ month',
       desc: 'Ongoing design support for a brand that publishes regularly.',
       features: ['Unlimited design requests', 'Social media + print coverage', 'Dedicated turnaround windows', 'Monthly strategy check-in'],
@@ -890,24 +890,52 @@ document.addEventListener('DOMContentLoaded', () => {
   revealEls.forEach(el => io.observe(el));
 
   /* ---------------------------------------------------------
-     CONTACT FORM — mailto handoff
+     CONTACT FORM — Web3Forms submission
+     Get a free access key at https://web3forms.com and paste it
+     into the hidden "access_key" input in index.html.
   --------------------------------------------------------- */
   const form = document.getElementById('contactForm');
   const formNote = document.getElementById('formNote');
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('cf-name').value.trim();
-    const email = document.getElementById('cf-email').value.trim();
-    const project = document.getElementById('cf-project').value;
-    const message = document.getElementById('cf-message').value.trim();
+  const formSubmitBtn = document.getElementById('formSubmitBtn');
 
-    const subject = encodeURIComponent(`New project inquiry: ${project}`);
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\nProject type: ${project}\n\nMessage:\n${message}`
-    );
-    window.location.href = `mailto:thinkneuofficial@gmail.com?subject=${subject}&body=${body}`;
-    formNote.textContent = 'Opening your email app now — send it from there to reach me.';
-  });
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const accessKey = form.querySelector('[name="access_key"]').value.trim();
+      if (!accessKey || accessKey === 'YOUR_WEB3FORMS_ACCESS_KEY_HERE') {
+        formNote.textContent = 'Form isn\'t connected yet — add a Web3Forms access key in index.html.';
+        return;
+      }
+
+      formSubmitBtn.disabled = true;
+      formSubmitBtn.textContent = 'Sending…';
+      formNote.textContent = '';
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(Object.fromEntries(new FormData(form)))
+        });
+        const result = await res.json();
+
+        if (result.success) {
+          form.reset();
+          formSubmitBtn.textContent = 'Message sent';
+          formNote.textContent = 'Thanks! I\'ll get back to you by email soon.';
+        } else {
+          throw new Error(result.message || 'Submission failed');
+        }
+      } catch (err) {
+        formSubmitBtn.textContent = 'Send message';
+        formNote.textContent = 'Something went wrong sending that — please try again or email me directly.';
+      } finally {
+        formSubmitBtn.disabled = false;
+        setTimeout(() => { formSubmitBtn.textContent = 'Send message'; }, 4000);
+      }
+    });
+  }
 
   /* ---------------------------------------------------------
      FOOTER YEAR

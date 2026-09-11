@@ -107,7 +107,7 @@
           and marketing collateral — using Photoshop, Illustrator, Figma and Canva.
         </p>
         <div class="hero-actions reveal" data-reveal>
-          <a href="#projects" class="btn btn-primary">View my work</a>
+          <a href="#sample-work" class="btn btn-primary">View my work</a>
           <a href="#contact" class="btn btn-ghost">Start a project</a>
         </div>
 
@@ -314,6 +314,12 @@
       </div>
 
       <form class="contact-form glass reveal" data-reveal id="contactForm">
+        <!-- Get your free access key at https://web3forms.com (no signup, just enter your email) and paste it below -->
+        <input type="hidden" name="access_key" value="e0715d14-2706-4c68-bc47-0b26427fcba7">
+        <input type="hidden" name="subject" value="New project inquiry — Pixel Aura Studio">
+        <input type="hidden" name="from_name" value="Pixel Aura Studio site">
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+
         <div class="form-row">
           <label for="cf-name">Name</label>
           <input type="text" id="cf-name" name="name" placeholder="Your name" required>
@@ -336,8 +342,8 @@
           <label for="cf-message">Message</label>
           <textarea id="cf-message" name="message" rows="4" placeholder="Tell me a bit about your project" required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary form-submit">Send message</button>
-        <p class="form-note" id="formNote">This opens your email app with the message pre-filled.</p>
+        <button type="submit" class="btn btn-primary form-submit" id="formSubmitBtn">Send message</button>
+        <p class="form-note" id="formNote">Sent straight to my inbox — I'll reply by email.</p>
       </form>
     </div>
   </section>
