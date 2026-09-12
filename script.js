@@ -802,6 +802,54 @@ document.addEventListener('DOMContentLoaded', () => {
     navLinkEls.forEach(l => l.classList.toggle('active', l.getAttribute('href') === `#${current.id}`));
   }, { passive: true });
 
+  /* Liquid glass indicator: glides + squashes behind the hovered/active link */
+  const liquidGlass = document.getElementById('navLiquidGlass');
+  if (liquidGlass && window.matchMedia('(min-width: 761px)').matches) {
+    let liquidHoverLock = false;
+
+    const moveLiquidGlass = (el, instant) => {
+      if (!el) return;
+      const wrapRect = navLinks.getBoundingClientRect();
+      const rect = el.getBoundingClientRect();
+
+      if (instant) liquidGlass.style.transitionDuration = '0s, 0s, 0s';
+      liquidGlass.style.opacity = '1';
+      liquidGlass.style.left = `${rect.left - wrapRect.left}px`;
+      liquidGlass.style.width = `${rect.width}px`;
+
+      liquidGlass.classList.remove('liquid-morph');
+      void liquidGlass.offsetWidth;
+      liquidGlass.classList.add('liquid-morph');
+
+      if (instant) {
+        requestAnimationFrame(() => { liquidGlass.style.transitionDuration = ''; });
+      }
+    };
+
+    const getActiveLink = () => navLinkEls.find(l => l.classList.contains('active')) || navLinkEls[0];
+
+    navLinkEls.forEach(link => {
+      link.addEventListener('mouseenter', () => {
+        liquidHoverLock = true;
+        moveLiquidGlass(link);
+      });
+    });
+
+    navLinks.addEventListener('mouseleave', () => {
+      liquidHoverLock = false;
+      moveLiquidGlass(getActiveLink());
+    });
+
+    const liquidObserver = new MutationObserver(() => {
+      if (!liquidHoverLock) moveLiquidGlass(getActiveLink());
+    });
+    navLinkEls.forEach(l => liquidObserver.observe(l, { attributes: true, attributeFilter: ['class'] }));
+
+    window.addEventListener('resize', () => moveLiquidGlass(getActiveLink(), true));
+    window.addEventListener('load', () => moveLiquidGlass(getActiveLink(), true));
+    requestAnimationFrame(() => moveLiquidGlass(getActiveLink(), true));
+  }
+
   navBurger.addEventListener('click', () => {
     const open = navLinks.classList.toggle('open');
     navBurger.classList.toggle('open', open);
