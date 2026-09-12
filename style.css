@@ -1488,40 +1488,44 @@ body.lightbox-open{ overflow: hidden; }
 }
 
 /* ============================================================
-   PROJECTS — curved 3D rotating photo arc
+   PROJECTS — open 3D photo fan, flowing left to right
+   (position/tilt/curve are computed and applied inline by JS
+   per frame — this block only sets static look & sizing)
    ============================================================ */
 .projects-coverflow{ margin-top: 8px; position: relative; }
 
-/* soft floor glow beneath the arc, like light bouncing off a glass table */
+/* soft floor glow beneath the fan, like light bouncing off a glass table */
 .projects-coverflow::before{
   content: "";
   position: absolute;
-  left: 50%; bottom: 30px;
+  left: 50%; bottom: 10px;
   width: min(720px, 82%);
-  height: 140px;
+  height: 130px;
   transform: translateX(-50%);
-  background: radial-gradient(ellipse at center, rgba(151,183,243,0.38) 0%, rgba(91,85,138,0.22) 45%, transparent 75%);
+  background: radial-gradient(ellipse at center, rgba(151,183,243,0.32) 0%, rgba(91,85,138,0.18) 45%, transparent 75%);
   filter: blur(30px);
   z-index: 0;
   pointer-events: none;
 }
 
 .projects-coverflow .coverflow-stage{
-  height: 460px;
-  perspective: 1700px;
-  perspective-origin: 50% 30%;
+  height: 360px;
+  perspective: 1400px;
+  perspective-origin: 50% 42%;
+  overflow: hidden;
   z-index: 1;
 }
 .projects-coverflow .coverflow-track{
-  will-change: transform;
-  transform-style: preserve-3d;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .projects-coverflow .cf-card.pf-card{
-  width: 210px;
-  height: 300px;
+  width: 176px;
+  height: 250px;
   aspect-ratio: auto;
-  border-radius: 26px;
+  border-radius: 22px;
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-end;
@@ -1530,20 +1534,13 @@ body.lightbox-open{ overflow: hidden; }
   overflow: hidden;
   background-color: rgba(23,20,48,0.6);
   border: 1px solid rgba(255,255,255,0.16);
-  box-shadow: 0 18px 40px -18px rgba(0,0,0,0.6);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  filter: brightness(0.5) saturate(0.8);
-  transition: filter .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease);
+  box-shadow: 0 18px 36px -18px rgba(0,0,0,0.55);
+  will-change: transform, opacity, filter;
+  transition: box-shadow .4s var(--ease), border-color .4s var(--ease);
 }
-
-/* the frontmost card in the arc lights up, like the centre poster of a coverflow */
 .projects-coverflow .cf-card.pf-card.pf-active{
-  filter: brightness(1) saturate(1.05);
   border-color: rgba(255,255,255,0.5);
-  box-shadow: 0 28px 60px -16px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.3), 0 0 40px -10px rgba(151,183,243,0.5);
+  box-shadow: 0 26px 54px -16px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.3), 0 0 36px -10px rgba(151,183,243,0.5);
 }
 
 .pf-img{
@@ -1554,12 +1551,11 @@ body.lightbox-open{ overflow: hidden; }
   object-fit: cover;
   z-index: 0;
 }
-/* gradient placeholder (used while loading, or if the image fails) */
 .pf-icon{
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%,-50%);
-  font-size: 2.4rem;
+  font-size: 2.1rem;
   z-index: 0;
   filter: drop-shadow(0 6px 14px rgba(0,0,0,0.35));
   opacity: 0.9;
@@ -1572,23 +1568,20 @@ body.lightbox-open{ overflow: hidden; }
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 16px 16px 14px;
+  padding: 14px 14px 12px;
 }
-.pf-title{ font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.92rem; color: #fff; line-height: 1.25; }
-.pf-sub{ font-size: 0.72rem; color: rgba(255,255,255,0.78); }
+.pf-title{ font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.86rem; color: #fff; line-height: 1.25; }
+.pf-sub{ font-size: 0.68rem; color: rgba(255,255,255,0.78); }
 
-.pf-zoom-hint{ border-radius: 26px; }
+.pf-zoom-hint{ border-radius: 22px; }
 
 @media(max-width: 640px){
-  .projects-coverflow .coverflow-stage{ height: 380px; perspective: 1200px; }
-  .projects-coverflow .cf-card.pf-card{ width: 168px; height: 240px; }
-  .pf-icon{ font-size: 1.9rem; }
-  .pf-title{ font-size: 0.84rem; }
-  .pf-sub{ font-size: 0.68rem; }
-  .pf-caption{ padding: 12px 12px 10px; }
-}
-@media(max-width: 420px){
-  .projects-coverflow .cf-card.pf-card{ width: 148px; height: 210px; }
+  .projects-coverflow .coverflow-stage{ height: 280px; perspective: 1000px; }
+  .projects-coverflow .cf-card.pf-card{ width: 128px; height: 182px; }
+  .pf-icon{ font-size: 1.6rem; }
+  .pf-title{ font-size: 0.76rem; }
+  .pf-sub{ font-size: 0.62rem; }
+  .pf-caption{ padding: 10px 10px 9px; }
 }
 
 /* ============================================================

@@ -570,10 +570,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ---------------------------------------------------------
-     RENDER + INIT: projects glassy round coverflow
+     RENDER + INIT: projects — open 3D fan (flows left to right,
+     nothing hides around the back like a closed ring)
   --------------------------------------------------------- */
   const projectsTrack = document.getElementById('projectsTrack');
-  projectsTrack.innerHTML = projects.map((p) => `
+  const PF_COPIES = 3; // repeat the set so the strip can loop seamlessly
+  const projectCardHTML = (p) => `
     <div class="cf-card pf-card" style="background:${p.grad}">
       <img class="cf-img pf-img" src="${p.img}" alt="${p.title}" loading="lazy"
            onerror="this.style.display='none'; this.closest('.pf-card').classList.add('pf-no-img');">
@@ -584,84 +586,94 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
       <div class="cf-zoom-hint pf-zoom-hint"><span>View project ↗</span></div>
     </div>
-  `).join('');
+  `;
+  let projectsHTML = '';
+  for (let c = 0; c < PF_COPIES; c++) projectsHTML += projects.map(projectCardHTML).join('');
+  projectsTrack.innerHTML = projectsHTML;
 
   function initProjectsCoverflow(root){
+    const stage = root.querySelector('.coverflow-stage');
     const track = root.querySelector('.coverflow-track');
     const cards = [...root.querySelectorAll('.cf-card')];
     const counter = root.querySelector('.cf-counter');
     const prevBtn = root.querySelector('.cf-prev');
     const nextBtn = root.querySelector('.cf-next');
     const toggleBtn = root.querySelector('.cf-toggle');
-    const len = cards.length;
-    const step = 360 / len;
+    const len = projects.length;
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = () => window.innerWidth <= 640;
 
-    // tilt of the whole ring, so it reads as a curved arc rather than a flat circle
-    const TILT = window.innerWidth <= 640 ? 6 : 10;
+    // look tuning — how far cards tilt/rise/recede as they move away from center
+    const MAXTILT = () => isMobile() ? 34 : 48;
+    const CURVE   = () => isMobile() ? 16 : 30;
+    const DEPTH   = () => isMobile() ? 70 : 140;
 
-    function getCardWidth(){
-      const first = cards[0];
-      return first ? first.getBoundingClientRect().width : (window.innerWidth <= 640 ? 190 : 260);
-    }
+    let spacing = 0;
+    let stageW = 0;
 
-    let radius;
     function layout(){
-      const w = getCardWidth();
-      // enough radius that neighbouring cards don't overlap, tuned for a tight arc
-      radius = Math.round((w / 2) / Math.tan(Math.PI / len)) + (window.innerWidth <= 640 ? 30 : 70);
-      cards.forEach((card, i) => {
-        card.style.transform = `translate(-50%,-50%) rotateY(${i * step}deg) translateZ(${radius}px)`;
-      });
+      const first = cards[0];
+      const cardW = first ? first.getBoundingClientRect().width : (isMobile() ? 130 : 176);
+      spacing = cardW + (isMobile() ? 14 : 24);
+      stageW = stage.getBoundingClientRect().width;
     }
     layout();
     window.addEventListener('resize', layout);
 
-    let angle = 0;
+    const setWidth = () => spacing * len;
+    // start roughly centered on the middle copy of the set
+    let offset = spacing * len - stageW / 2 + spacing / 2;
     let autoplay = true;
     let hovering = false;
     let last = null;
-    let snapping = false;
+    let manualNudge = 0; // eased toward 0 after prev/next, on top of the scroll offset
 
-    function activeIndex(){
-      return (((Math.round(-angle / step) % len) + len) % len);
-    }
+    function render(){
+      const half = stageW / 2;
+      cards.forEach((card, i) => {
+        const worldX = i * spacing - offset;
+        const relX = worldX - half;
+        const t = Math.max(-1.5, Math.min(1.5, relX / half));
+        const at = Math.min(Math.abs(t), 1);
 
-    function updateCounter(){
-      const idx = activeIndex();
-      if (counter) counter.textContent = `${idx + 1} / ${len}`;
-      cards.forEach((card, i) => card.classList.toggle('pf-active', i === idx));
-    }
+        const rotateY = -t * MAXTILT();
+        const rise = -CURVE() * Math.pow(at, 1.6);
+        const depth = -DEPTH() * at;
+        const scale = 1 - 0.32 * at;
+        const dim = 1 - 0.35 * at;
+        const fade = Math.max(0, Math.min(1, 1 - (Math.abs(t) - 0.82) / 0.4));
 
-    function applyAngle(){
-      track.style.transform = `rotateX(${TILT}deg) rotateY(${angle}deg)`;
+        card.style.transform = `translate(-50%,-50%) translateX(${relX}px) translateY(${rise}px) translateZ(${depth}px) rotateY(${rotateY}deg) scale(${scale})`;
+        card.style.opacity = fade.toFixed(3);
+        card.style.filter = `brightness(${dim.toFixed(3)})`;
+        card.style.pointerEvents = fade > 0.05 ? 'auto' : 'none';
+        card.classList.toggle('pf-active', Math.abs(t) < (spacing / 2) / half);
+      });
+      const activeProject = (((Math.round(offset / spacing) % len) + len) % len);
+      if (counter) counter.textContent = `${activeProject + 1} / ${len}`;
     }
 
     function tick(t){
       if (last === null) last = t;
-      const dt = t - last;
+      const dt = Math.min(t - last, 48);
       last = t;
-      if (autoplay && !hovering && !snapping && !reduceMotion){
-        angle -= dt * 0.016;
-        applyAngle();
-        updateCounter();
+      if (autoplay && !hovering && !reduceMotion){
+        offset += dt * (isMobile() ? 0.028 : 0.038);
       }
+      if (Math.abs(manualNudge) > 0.5){
+        offset += manualNudge * 0.18;
+        manualNudge *= 0.82;
+      } else {
+        manualNudge = 0;
+      }
+      offset = ((offset % setWidth()) + setWidth()) % setWidth();
+      render();
       requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
 
-    function snapBy(dir){
-      snapping = true;
-      angle += dir * -step;
-      track.style.transition = 'transform .7s var(--ease)';
-      applyAngle();
-      updateCounter();
-      setTimeout(() => { track.style.transition = ''; snapping = false; last = null; }, 700);
-    }
-
     function play(){
       autoplay = true;
-      last = null;
       toggleBtn.textContent = '⏸';
       toggleBtn.setAttribute('aria-label', 'Pause autoplay');
     }
@@ -671,28 +683,20 @@ document.addEventListener('DOMContentLoaded', () => {
       toggleBtn.setAttribute('aria-label', 'Play autoplay');
     }
 
-    prevBtn.addEventListener('click', () => { snapBy(-1); pause(); });
-    nextBtn.addEventListener('click', () => { snapBy(1); pause(); });
+    prevBtn.addEventListener('click', () => { manualNudge -= spacing; pause(); });
+    nextBtn.addEventListener('click', () => { manualNudge += spacing; pause(); });
     toggleBtn.addEventListener('click', () => { autoplay ? pause() : play(); });
-    cards.forEach((card, i) => card.addEventListener('click', () => {
-      const idx = activeIndex();
-      if (i === idx){
+    cards.forEach((card) => card.addEventListener('click', () => {
+      if (card.classList.contains('pf-active')){
         openLightbox(card);
         pause();
-        return;
       }
-      let diff = i - idx;
-      if (diff > len / 2) diff -= len;
-      if (diff < -len / 2) diff += len;
-      snapBy(diff);
-      pause();
     }));
 
     root.addEventListener('mouseenter', () => { hovering = true; });
     root.addEventListener('mouseleave', () => { hovering = false; last = null; });
 
-    applyAngle();
-    updateCounter();
+    render();
   }
   initProjectsCoverflow(document.getElementById('projectsCoverflow'));
 
