@@ -862,41 +862,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }));
 
   /* ---------------------------------------------------------
-     HERO LOGO — 3D auto-rotation + mouse tilt (all-axis motion)
+     HERO LOGO — straight continuous 360° spin (single axis)
   --------------------------------------------------------- */
   const logo3d = document.getElementById('logo3d');
-  const logoStage = document.getElementById('logoStage');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  let targetTiltX = 0, targetTiltY = 0;
-  let mouseTiltX = 0, mouseTiltY = 0;
-
-  if (logoStage && !reduceMotion){
-    logoStage.addEventListener('pointermove', (e) => {
-      const rect = logoStage.getBoundingClientRect();
-      const px = (e.clientX - rect.left) / rect.width - 0.5;
-      const py = (e.clientY - rect.top) / rect.height - 0.5;
-      targetTiltY = px * 46;
-      targetTiltX = -py * 46;
-    });
-    logoStage.addEventListener('pointerleave', () => {
-      targetTiltX = 0; targetTiltY = 0;
-    });
-  }
 
   function animateLogo(t){
     if (logo3d && !reduceMotion){
-      // continuous slow tumble across every axis
-      const autoY = Math.sin(t / 3200) * 22;
-      const autoX = Math.sin(t / 2500) * 12;
-      const autoZ = Math.sin(t / 5200) * 6;
-
-      mouseTiltX += (targetTiltX - mouseTiltX) * 0.06;
-      mouseTiltY += (targetTiltY - mouseTiltY) * 0.06;
-
-      logo3d.style.setProperty('--tilt-x', `${autoX + mouseTiltX}deg`);
-      logo3d.style.setProperty('--tilt-y', `${autoY + mouseTiltY}deg`);
-      logo3d.style.setProperty('--tilt-z', `${autoZ}deg`);
+      const autoY = (t / 45) % 360;
+      logo3d.style.setProperty('--tilt-x', `0deg`);
+      logo3d.style.setProperty('--tilt-y', `${autoY}deg`);
+      logo3d.style.setProperty('--tilt-z', `0deg`);
     }
     requestAnimationFrame(animateLogo);
   }
