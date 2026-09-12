@@ -5,6 +5,49 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------------------------------------------------------
+     HERO CAPTION — reveal the "Made for / SHRADDHA / role" text
+     one piece at a time (label words, then name letters, then
+     role words), instead of all appearing at once
+  --------------------------------------------------------- */
+  (function staggerHeroCaption(){
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) return;
+
+    const label = document.querySelector('.reel-caption-label');
+    const name = document.querySelector('.reel-caption-name');
+    const role = document.querySelector('.reel-caption-role');
+
+    const BASE_DELAY = 950;   // ms before the very first piece appears (after the logo rises into place)
+    const WORD_STEP = 90;     // ms between each word
+    const LETTER_STEP = 55;   // ms between each letter of the name
+    let t = BASE_DELAY;
+
+    function wrapWords(el){
+      if (!el) return;
+      const words = el.textContent.trim().split(/\s+/);
+      el.innerHTML = words.map(w => {
+        const span = `<span class="cap-piece" style="animation-delay:${t}ms">${w}</span>`;
+        t += WORD_STEP;
+        return span;
+      }).join(' ');
+    }
+    function wrapLetters(el){
+      if (!el) return;
+      const chars = [...el.textContent];
+      el.innerHTML = chars.map(ch => {
+        const safe = ch === ' ' ? '&nbsp;' : ch;
+        const span = `<span class="cap-piece" style="animation-delay:${t}ms">${safe}</span>`;
+        t += LETTER_STEP;
+        return span;
+      }).join('');
+    }
+
+    wrapWords(label);
+    wrapLetters(name);
+    wrapWords(role);
+  })();
+
+  /* ---------------------------------------------------------
      DATA
   --------------------------------------------------------- */
   const tools = [
