@@ -634,7 +634,7 @@ button{ font-family: inherit; cursor: pointer; }
 .reel-caption{
   position: absolute;
   z-index: 2;
-  left: 32px; bottom: 8px;
+  left: 32px; bottom: 0;
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -805,7 +805,7 @@ button{ font-family: inherit; cursor: pointer; }
   .reel-social-btn{ width: 44px; height: 44px; border-radius: 16px; }
   .reel-social-icon{ font-size: 0.78rem; }
   .reel-social-pop{ display: none; }
-  .reel-caption{ left: 20px; bottom: 6px; }
+  .reel-caption{ left: 20px; bottom: 0; }
   .reel-caption-name{ font-size: 1.2rem; }
 }
 
@@ -1927,7 +1927,18 @@ body.lightbox-open{ overflow: hidden; }
 .reveal.in-view{ opacity: 1; transform: translateY(0); }
 
 /* stagger hero elements on load */
-.hero-copy .reveal{ transition-delay: calc(var(--i, 0) * 0.09s); }
+.about-intro .reveal{ transition-delay: calc(var(--i, 0) * 0.09s); }
+
+/* sentence-by-sentence slide-in — alternating left/right entrance,
+   used on the "Designing ideas. / Creating impact." intro copy */
+.reveal-left, .reveal-right{ transform: none; }
+.reveal-left{ transform: translateX(-70px); }
+.reveal-right{ transform: translateX(70px); }
+.reveal-left.in-view, .reveal-right.in-view{ transform: translateX(0); }
+.title-line{ display: inline-block; }
+@media(prefers-reduced-motion: reduce){
+  .reveal-left, .reveal-right{ transform: none; }
+}
 
 /* ============================================================
    FOCUS STATES (accessibility)
