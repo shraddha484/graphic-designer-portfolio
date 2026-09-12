@@ -187,27 +187,52 @@ document.addEventListener('DOMContentLoaded', () => {
   const projects = [
     {
       icon: '🪪',
-      title: 'Brand identity — concept startup',
-      desc: 'Complete identity system: logo, business card, letterhead and social media kit built around one consistent palette.',
-      tags: ['Branding', 'Logo', 'Identity system']
+      title: 'Brand identity',
+      sub: 'Concept startup',
+      tags: ['Branding', 'Logo', 'Identity system'],
+      grad: 'linear-gradient(160deg, var(--purple), var(--blue))',
+      // Replace with your own file, e.g. 'assets/projects/brand-identity.jpg'
+      img: 'https://picsum.photos/seed/pixelaura-branding/500/700'
     },
     {
       icon: '🏋️',
-      title: 'Marketing flyer — fitness campaign',
-      desc: 'A bold, high-contrast flyer for a fitness brand promotion, built for strong shelf and feed presence.',
-      tags: ['Flyer design', 'Typography', 'Print']
+      title: 'Fitness flyer',
+      sub: 'Marketing campaign',
+      tags: ['Flyer design', 'Typography', 'Print'],
+      grad: 'linear-gradient(160deg, var(--violet), var(--purple))',
+      img: 'https://picsum.photos/seed/pixelaura-fitness/500/700'
     },
     {
       icon: '☕',
-      title: 'Social campaign — café brand',
-      desc: 'Instagram posts, stories and ad creatives for a café\'s promotional campaign, kept consistent across formats.',
-      tags: ['Social media', 'Campaign', 'Instagram']
+      title: 'Café campaign',
+      sub: 'Social media',
+      tags: ['Social media', 'Campaign', 'Instagram'],
+      grad: 'linear-gradient(160deg, var(--blue), var(--cyan))',
+      img: 'https://picsum.photos/seed/pixelaura-cafe/500/700'
     },
     {
       icon: '🧴',
-      title: 'Packaging — organic skincare',
-      desc: 'Packaging and label concepts for an organic skincare line, presented with professional product mockups.',
-      tags: ['Packaging', 'Labels', 'Mockups']
+      title: 'Skincare packaging',
+      sub: 'Organic skincare line',
+      tags: ['Packaging', 'Labels', 'Mockups'],
+      grad: 'linear-gradient(160deg, var(--cyan), var(--violet))',
+      img: 'https://picsum.photos/seed/pixelaura-skincare/500/700'
+    },
+    {
+      icon: '📇',
+      title: 'Business card set',
+      sub: 'Studio stationery',
+      tags: ['Print', 'Stationery', 'Branding'],
+      grad: 'linear-gradient(160deg, var(--purple), var(--cyan))',
+      img: 'https://picsum.photos/seed/pixelaura-cards/500/700'
+    },
+    {
+      icon: '📱',
+      title: 'App promo kit',
+      sub: 'Store & social assets',
+      tags: ['UI graphics', 'Social media', 'Mockups'],
+      grad: 'linear-gradient(160deg, var(--blue), var(--purple))',
+      img: 'https://picsum.photos/seed/pixelaura-app/500/700'
     },
   ];
 
@@ -545,33 +570,131 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ---------------------------------------------------------
-     RENDER: projects grid
+     RENDER + INIT: projects glassy round coverflow
   --------------------------------------------------------- */
-  const projectsGrid = document.getElementById('projectsGrid');
-  projectsGrid.innerHTML = projects.map((p, i) => `
-    <div class="project-card reveal" data-reveal>
-      <div class="project-cover" style="background:${gradientFor(i)}">
-        <span class="project-cover-icon">${p.icon}</span>
+  const projectsTrack = document.getElementById('projectsTrack');
+  projectsTrack.innerHTML = projects.map((p) => `
+    <div class="cf-card pf-card" style="background:${p.grad}">
+      <img class="cf-img pf-img" src="${p.img}" alt="${p.title}" loading="lazy"
+           onerror="this.style.display='none'; this.closest('.pf-card').classList.add('pf-no-img');">
+      <span class="cf-icon pf-icon">${p.icon}</span>
+      <div class="pf-caption">
+        <span class="cf-title pf-title">${p.title}</span>
+        <span class="cf-sub pf-sub">${p.sub || (p.tags && p.tags[0]) || ''}</span>
       </div>
-      <div class="project-body">
-        <h3 class="project-title">${p.title}</h3>
-        <p class="project-desc">${p.desc}</p>
-        <div class="project-tags">
-          ${p.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}
-        </div>
-      </div>
+      <div class="cf-zoom-hint pf-zoom-hint"><span>View project ↗</span></div>
     </div>
   `).join('');
 
-  function gradientFor(i){
-    const grads = [
-      'linear-gradient(135deg,#8b2ff7,#22d3ee)',
-      'linear-gradient(135deg,#4f7cff,#b026ff)',
-      'linear-gradient(135deg,#22d3ee,#4f7cff)',
-      'linear-gradient(135deg,#b026ff,#ff5fa2)'
-    ];
-    return grads[i % grads.length];
+  function initProjectsCoverflow(root){
+    const track = root.querySelector('.coverflow-track');
+    const cards = [...root.querySelectorAll('.cf-card')];
+    const counter = root.querySelector('.cf-counter');
+    const prevBtn = root.querySelector('.cf-prev');
+    const nextBtn = root.querySelector('.cf-next');
+    const toggleBtn = root.querySelector('.cf-toggle');
+    const len = cards.length;
+    const step = 360 / len;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // tilt of the whole ring, so it reads as a curved arc rather than a flat circle
+    const TILT = window.innerWidth <= 640 ? 6 : 10;
+
+    function getCardWidth(){
+      const first = cards[0];
+      return first ? first.getBoundingClientRect().width : (window.innerWidth <= 640 ? 190 : 260);
+    }
+
+    let radius;
+    function layout(){
+      const w = getCardWidth();
+      // enough radius that neighbouring cards don't overlap, tuned for a tight arc
+      radius = Math.round((w / 2) / Math.tan(Math.PI / len)) + (window.innerWidth <= 640 ? 30 : 70);
+      cards.forEach((card, i) => {
+        card.style.transform = `translate(-50%,-50%) rotateY(${i * step}deg) translateZ(${radius}px)`;
+      });
+    }
+    layout();
+    window.addEventListener('resize', layout);
+
+    let angle = 0;
+    let autoplay = true;
+    let hovering = false;
+    let last = null;
+    let snapping = false;
+
+    function activeIndex(){
+      return (((Math.round(-angle / step) % len) + len) % len);
+    }
+
+    function updateCounter(){
+      const idx = activeIndex();
+      if (counter) counter.textContent = `${idx + 1} / ${len}`;
+      cards.forEach((card, i) => card.classList.toggle('pf-active', i === idx));
+    }
+
+    function applyAngle(){
+      track.style.transform = `rotateX(${TILT}deg) rotateY(${angle}deg)`;
+    }
+
+    function tick(t){
+      if (last === null) last = t;
+      const dt = t - last;
+      last = t;
+      if (autoplay && !hovering && !snapping && !reduceMotion){
+        angle -= dt * 0.016;
+        applyAngle();
+        updateCounter();
+      }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    function snapBy(dir){
+      snapping = true;
+      angle += dir * -step;
+      track.style.transition = 'transform .7s var(--ease)';
+      applyAngle();
+      updateCounter();
+      setTimeout(() => { track.style.transition = ''; snapping = false; last = null; }, 700);
+    }
+
+    function play(){
+      autoplay = true;
+      last = null;
+      toggleBtn.textContent = '⏸';
+      toggleBtn.setAttribute('aria-label', 'Pause autoplay');
+    }
+    function pause(){
+      autoplay = false;
+      toggleBtn.textContent = '▶';
+      toggleBtn.setAttribute('aria-label', 'Play autoplay');
+    }
+
+    prevBtn.addEventListener('click', () => { snapBy(-1); pause(); });
+    nextBtn.addEventListener('click', () => { snapBy(1); pause(); });
+    toggleBtn.addEventListener('click', () => { autoplay ? pause() : play(); });
+    cards.forEach((card, i) => card.addEventListener('click', () => {
+      const idx = activeIndex();
+      if (i === idx){
+        openLightbox(card);
+        pause();
+        return;
+      }
+      let diff = i - idx;
+      if (diff > len / 2) diff -= len;
+      if (diff < -len / 2) diff += len;
+      snapBy(diff);
+      pause();
+    }));
+
+    root.addEventListener('mouseenter', () => { hovering = true; });
+    root.addEventListener('mouseleave', () => { hovering = false; last = null; });
+
+    applyAngle();
+    updateCounter();
   }
+  initProjectsCoverflow(document.getElementById('projectsCoverflow'));
 
   /* ---------------------------------------------------------
      RENDER: pricing

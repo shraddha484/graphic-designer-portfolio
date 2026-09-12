@@ -130,9 +130,8 @@ button{ font-family: inherit; cursor: pointer; }
 }
 
 /* ============================================================
-   LIQUID GLASS HEADINGS — hero title + every section title
-   sit on an actual frosted, morphing glass plate, with a
-   shimmering gradient fill and a moving specular highlight.
+   HEADINGS — hero title + every section title get a shimmering
+   gradient fill that slowly drifts across the text.
    ============================================================ */
 .hero-title,
 .section-title,
@@ -157,45 +156,8 @@ button{ font-family: inherit; cursor: pointer; }
   50%{ background-position: 100% 50%; }
 }
 
-.hero-title,
-.section-title{
-  display: inline-block;
-  isolation: isolate;
-  padding: 0.2em 0.05em;
-}
-.hero-title::before,
-.section-title::before{
-  content: "";
-  position: absolute;
-  inset: -0.28em -0.5em;
-  z-index: -1;
-  background-image:
-    linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.4) 34%, rgba(255,255,255,0.06) 46%, transparent 62%),
-    linear-gradient(160deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03) 55%, rgba(91,85,138,0.12));
-  background-size: 240% 240%, 100% 100%;
-  background-position: -30% -30%, 0 0;
-  background-repeat: no-repeat;
-  border: 1px solid rgba(255,255,255,0.18);
-  backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -1px 0 rgba(255,255,255,0.05), 0 24px 50px -26px rgba(45,39,75,0.4);
-  border-radius: 32px 46px 40px 52px / 46px 32px 52px 40px;
-  animation: headingGlassMorph 11s ease-in-out infinite, headingSheen 6.5s ease-in-out infinite;
-  pointer-events: none;
-}
-@keyframes headingGlassMorph{
-  0%, 100%{ border-radius: 32px 46px 40px 52px / 46px 32px 52px 40px; }
-  33%{ border-radius: 50px 30px 46px 34px / 34px 50px 30px 46px; }
-  66%{ border-radius: 38px 50px 32px 48px / 48px 36px 50px 32px; }
-}
-@keyframes headingSheen{
-  0%{ background-position: -40% -40%, 0 0; }
-  50%{ background-position: 140% 140%, 0 0; }
-  100%{ background-position: -40% -40%, 0 0; }
-}
 @media(prefers-reduced-motion: reduce){
   .hero-title, .section-title, .grad-text{ animation: none; background-position: 30% 50%; }
-  .hero-title::before, .section-title::before{ animation: none; background-position: 20% 20%, 0 0; }
 }
 
 .pill{
@@ -1526,6 +1488,110 @@ body.lightbox-open{ overflow: hidden; }
 }
 
 /* ============================================================
+   PROJECTS — curved 3D rotating photo arc
+   ============================================================ */
+.projects-coverflow{ margin-top: 8px; position: relative; }
+
+/* soft floor glow beneath the arc, like light bouncing off a glass table */
+.projects-coverflow::before{
+  content: "";
+  position: absolute;
+  left: 50%; bottom: 30px;
+  width: min(720px, 82%);
+  height: 140px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(151,183,243,0.38) 0%, rgba(91,85,138,0.22) 45%, transparent 75%);
+  filter: blur(30px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.projects-coverflow .coverflow-stage{
+  height: 460px;
+  perspective: 1700px;
+  perspective-origin: 50% 30%;
+  z-index: 1;
+}
+.projects-coverflow .coverflow-track{
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+.projects-coverflow .cf-card.pf-card{
+  width: 210px;
+  height: 300px;
+  aspect-ratio: auto;
+  border-radius: 26px;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  background-color: rgba(23,20,48,0.6);
+  border: 1px solid rgba(255,255,255,0.16);
+  box-shadow: 0 18px 40px -18px rgba(0,0,0,0.6);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  filter: brightness(0.5) saturate(0.8);
+  transition: filter .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease);
+}
+
+/* the frontmost card in the arc lights up, like the centre poster of a coverflow */
+.projects-coverflow .cf-card.pf-card.pf-active{
+  filter: brightness(1) saturate(1.05);
+  border-color: rgba(255,255,255,0.5);
+  box-shadow: 0 28px 60px -16px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.3), 0 0 40px -10px rgba(151,183,243,0.5);
+}
+
+.pf-img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+/* gradient placeholder (used while loading, or if the image fails) */
+.pf-icon{
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  font-size: 2.4rem;
+  z-index: 0;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.35));
+  opacity: 0.9;
+}
+.pf-no-img .pf-icon{ opacity: 1; }
+
+.pf-caption{
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 16px 16px 14px;
+}
+.pf-title{ font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.92rem; color: #fff; line-height: 1.25; }
+.pf-sub{ font-size: 0.72rem; color: rgba(255,255,255,0.78); }
+
+.pf-zoom-hint{ border-radius: 26px; }
+
+@media(max-width: 640px){
+  .projects-coverflow .coverflow-stage{ height: 380px; perspective: 1200px; }
+  .projects-coverflow .cf-card.pf-card{ width: 168px; height: 240px; }
+  .pf-icon{ font-size: 1.9rem; }
+  .pf-title{ font-size: 0.84rem; }
+  .pf-sub{ font-size: 0.68rem; }
+  .pf-caption{ padding: 12px 12px 10px; }
+}
+@media(max-width: 420px){
+  .projects-coverflow .cf-card.pf-card{ width: 148px; height: 210px; }
+}
+
+/* ============================================================
    PROJECTS
    ============================================================ */
 .projects-grid{
@@ -1774,6 +1840,13 @@ body.lightbox-open{ overflow: hidden; }
   background: rgba(255,255,255,0.06);
 }
 .form-row select{ appearance: none; }
+/* the pop-open option list is rendered by the browser/OS on a plain
+   white background, regardless of the dark theme above — so option
+   text needs its own dark color to stay readable there */
+.form-row select option{
+  color: var(--bg);
+  background: #ffffff;
+}
 .form-submit{ width: 100%; margin-top: 4px; }
 .form-note{ font-size: 0.78rem; color: var(--muted-2); text-align: center; }
 
