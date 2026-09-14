@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shraddha — Pixel Aura Studio | Graphic Designer</title>
+<link rel="icon" id="favicon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23171430'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-weight='700' font-size='28' fill='%2397b7f3' text-anchor='middle'%3EPA%3C/text%3E%3C/svg%3E">
 <meta name="description" content="Shraddha — Freelance Graphic Designer at Pixel Aura Studio. Branding, logo design, print design and social media graphics.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,28 +15,44 @@
 
 <div class="noise-overlay" aria-hidden="true"></div>
 <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+<div class="custom-cursor" id="customCursor" aria-hidden="true">
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M3 21L8.5 19.5L20 8C20.8284 7.17157 20.8284 5.82843 20 5L19 4C18.1716 3.17157 16.8284 3.17157 16 4L4.5 15.5L3 21Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M14.5 5.5L18.5 9.5" stroke="currentColor" stroke-width="1.6"/>
+  </svg>
+</div>
 
 <!-- ============ NAV ============ -->
 <header class="nav" id="nav">
+  <div class="nav-scroll-progress" id="navScrollProgress" aria-hidden="true"></div>
   <div class="nav-inner">
     <a href="#home" class="nav-logo">
       <img src="assets/logo.jpg" alt="Pixel Aura Studio" class="nav-logo-mark">
       <span class="nav-logo-text">Pixel Aura<em>Studio</em></span>
     </a>
 
+    <span class="nav-availability" aria-label="Available for freelance projects">
+      <span class="nav-availability-dot" aria-hidden="true"></span>
+      Open for projects
+    </span>
+
     <nav class="nav-links" id="navLinks">
       <span class="nav-liquid-glass" id="navLiquidGlass" aria-hidden="true"></span>
       <a href="#home" class="nav-link active" data-link>Home</a>
       <a href="#about" class="nav-link" data-link>About</a>
+      <a href="#process" class="nav-link" data-link>Process</a>
       <a href="#toolkit" class="nav-link" data-link>Toolkit</a>
       <a href="#services" class="nav-link" data-link>Services</a>
       <a href="#sample-work" class="nav-link" data-link>Sample work</a>
       <a href="#clients" class="nav-link" data-link>Clients</a>
       <a href="#pricing" class="nav-link" data-link>Pricing</a>
       <a href="#reviews" class="nav-link" data-link>Reviews</a>
+      <a href="#faq" class="nav-link" data-link>FAQ</a>
     </nav>
 
-    <a href="#contact" class="btn btn-primary btn-small nav-cta">Let's talk</a>
+    <a href="#contact" class="btn btn-primary btn-small nav-cta magnetic">Let's talk</a>
+
+    <button class="sound-toggle" id="soundToggle" aria-label="Toggle interface sounds" aria-pressed="false" title="Toggle sound">🔇</button>
 
     <button class="nav-burger" id="navBurger" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -105,6 +122,11 @@
     </a>
   </section>
 
+  <!-- ============ STATUS TICKER ============ -->
+  <div class="status-ticker" aria-label="Current project status">
+    <div class="status-ticker-track" id="statusTickerTrack"></div>
+  </div>
+
   <!-- ============ ABOUT ============ -->
   <section class="section" id="about">
     <div class="section-inner">
@@ -120,21 +142,21 @@
           and marketing collateral — using Photoshop, Illustrator, Figma and Canva.
         </p>
         <div class="hero-actions reveal reveal-right" data-reveal>
-          <a href="#sample-work" class="btn btn-primary">View my work</a>
-          <a href="#contact" class="btn btn-ghost">Start a project</a>
+          <a href="#sample-work" class="btn btn-primary magnetic">View my work</a>
+          <a href="#contact" class="btn btn-ghost magnetic">Start a project</a>
         </div>
 
         <div class="hero-stats reveal reveal-left" data-reveal>
           <div class="stat">
-            <span class="stat-num">9</span>
+            <span class="stat-num" data-count-to="9" data-suffix="">0</span>
             <span class="stat-label">core design services</span>
           </div>
           <div class="stat">
-            <span class="stat-num">15+</span>
+            <span class="stat-num" data-count-to="15" data-suffix="+">0</span>
             <span class="stat-label">tools in the studio toolkit</span>
           </div>
           <div class="stat">
-            <span class="stat-num">100%</span>
+            <span class="stat-num" data-count-to="100" data-suffix="%">0</span>
             <span class="stat-label">original, print-ready files</span>
           </div>
         </div>
@@ -178,6 +200,50 @@
         </div>
       </div>
     </div>
+    </div>
+  </section>
+
+  <!-- ============ PROCESS ============ -->
+  <section class="section section-tight" id="process">
+    <div class="section-inner">
+      <div class="section-head center">
+        <span class="section-kicker reveal" data-reveal>Process</span>
+        <h2 class="section-title reveal" data-reveal>How we work together</h2>
+        <p class="section-text center reveal" data-reveal>
+          A simple four-step process, so you know exactly what to expect before you reach out.
+        </p>
+      </div>
+
+      <div class="process-grid">
+        <div class="process-card glass reveal" data-reveal>
+          <span class="process-num">01</span>
+          <h3 class="process-title">Discovery</h3>
+          <p class="process-text">We talk through your brand, audience and the problem the design needs to solve, plus budget and timeline.</p>
+          <span class="process-time">1–2 days</span>
+        </div>
+        <div class="process-card glass reveal" data-reveal>
+          <span class="process-num">02</span>
+          <h3 class="process-title">Concepts</h3>
+          <p class="process-text">You get one or more initial directions to react to — rough enough to move fast, clear enough to judge.</p>
+          <span class="process-time">3–5 days</span>
+        </div>
+        <div class="process-card glass reveal" data-reveal>
+          <span class="process-num">03</span>
+          <h3 class="process-title">Revisions</h3>
+          <p class="process-text">We refine the chosen direction based on your feedback until the details feel right, not just "approved."</p>
+          <span class="process-time">2–4 days</span>
+        </div>
+        <div class="process-card glass reveal" data-reveal>
+          <span class="process-num">04</span>
+          <h3 class="process-title">Delivery</h3>
+          <p class="process-text">You receive final, organized, print-ready files in every format you need — with a short usage note if useful.</p>
+          <span class="process-time">1–2 days</span>
+        </div>
+      </div>
+
+      <p class="process-footnote reveal" data-reveal>
+        Rough timelines for a single deliverable — larger or multi-part projects are scoped individually.
+      </p>
     </div>
   </section>
 
@@ -300,6 +366,69 @@
     </div>
   </section>
 
+  <!-- ============ FAQ ============ -->
+  <section class="section section-tight" id="faq">
+    <div class="section-inner">
+      <div class="section-head center">
+        <span class="section-kicker reveal" data-reveal>FAQ</span>
+        <h2 class="section-title reveal" data-reveal>Before you reach out</h2>
+        <p class="section-text center reveal" data-reveal>
+          Answers to the questions that usually come up before a project starts.
+        </p>
+      </div>
+
+      <div class="faq-list">
+        <details class="faq-item glass reveal" data-reveal>
+          <summary class="faq-question">
+            How many revisions do I get?
+            <span class="faq-icon" aria-hidden="true"></span>
+          </summary>
+          <p class="faq-answer">Every package includes a set number of revision rounds on the chosen concept (usually 2, more on larger packages). Small tweaks — colour, spacing, copy swaps — don't count against that. Extra rounds beyond what's included are billed at a simple hourly add-on.</p>
+        </details>
+
+        <details class="faq-item glass reveal" data-reveal>
+          <summary class="faq-question">
+            What file formats do I receive?
+            <span class="faq-icon" aria-hidden="true"></span>
+          </summary>
+          <p class="faq-answer">You get print-ready files (AI/EPS/PDF as needed) plus web-ready exports (PNG, JPG, SVG) sized for their intended use. Source files are included so you're never locked out of your own brand.</p>
+        </details>
+
+        <details class="faq-item glass reveal" data-reveal>
+          <summary class="faq-question">
+            Do you sign NDAs?
+            <span class="faq-icon" aria-hidden="true"></span>
+          </summary>
+          <p class="faq-answer">Yes — happy to sign a standard NDA before we discuss anything confidential, whether that's your own template or a short one I can send over.</p>
+        </details>
+
+        <details class="faq-item glass reveal" data-reveal>
+          <summary class="faq-question">
+            What if I don't like the first concept?
+            <span class="faq-icon" aria-hidden="true"></span>
+          </summary>
+          <p class="faq-answer">That's what the revision rounds are for. Tell me specifically what's missing or off, and we adjust the direction from there. If the concept is fundamentally the wrong fit, we'll reset with a fresh direction rather than force it.</p>
+        </details>
+
+        <details class="faq-item glass reveal" data-reveal>
+          <summary class="faq-question">
+            How do payments work?
+            <span class="faq-icon" aria-hidden="true"></span>
+          </summary>
+          <p class="faq-answer">Typically a deposit upfront to lock in the timeline, with the balance due on final delivery. For larger, multi-part projects this can be split into milestones instead.</p>
+        </details>
+
+        <details class="faq-item glass reveal" data-reveal>
+          <summary class="faq-question">
+            Can you work with an existing brand or style guide?
+            <span class="faq-icon" aria-hidden="true"></span>
+          </summary>
+          <p class="faq-answer">Absolutely — if you already have brand guidelines, fonts or colours, I'll design within them rather than starting from scratch. Just share what you have during the discovery step.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ CONTACT ============ -->
   <section class="section" id="contact">
     <div class="section-inner contact-grid">
@@ -362,8 +491,9 @@
           <label for="cf-message">Message</label>
           <textarea id="cf-message" name="message" rows="4" placeholder="Tell me a bit about your project" required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary form-submit" id="formSubmitBtn">Send message</button>
+        <button type="submit" class="btn btn-primary form-submit magnetic" id="formSubmitBtn">Send message</button>
         <p class="form-note" id="formNote">Sent straight to my inbox — I'll reply by email.</p>
+        <span class="response-time-badge">⏱ Usually replies within 24 hours</span>
       </form>
     </div>
   </section>
@@ -391,6 +521,41 @@
     </div>
   </div>
   <div class="lightbox-caption" id="lightboxCaption"></div>
+</div>
+
+<!-- ============ CASE STUDY MODAL (Clients' work projects) ============ -->
+<div class="case-study-modal" id="caseStudyModal" aria-hidden="true">
+  <div class="case-study-panel">
+    <button class="case-study-close" id="caseStudyClose" aria-label="Close case study">✕</button>
+    <img src="" alt="" class="case-study-img" id="caseStudyImg">
+    <div class="case-study-body">
+      <h3 class="case-study-title" id="caseStudyTitle"></h3>
+      <p class="case-study-sub" id="caseStudySub"></p>
+      <div class="case-study-steps">
+        <div class="case-study-step">
+          <span class="case-study-step-num">1</span>
+          <div>
+            <div class="case-study-step-label">Problem</div>
+            <p class="case-study-step-text" id="caseStudyProblem"></p>
+          </div>
+        </div>
+        <div class="case-study-step">
+          <span class="case-study-step-num">2</span>
+          <div>
+            <div class="case-study-step-label">Process</div>
+            <p class="case-study-step-text" id="caseStudyProcess"></p>
+          </div>
+        </div>
+        <div class="case-study-step">
+          <span class="case-study-step-num">3</span>
+          <div>
+            <div class="case-study-step-label">Result</div>
+            <p class="case-study-step-text" id="caseStudyResult"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="script.js"></script>

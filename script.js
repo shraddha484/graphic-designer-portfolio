@@ -235,7 +235,12 @@ document.addEventListener('DOMContentLoaded', () => {
       tags: ['Branding', 'Logo', 'Identity system'],
       grad: 'linear-gradient(160deg, var(--purple), var(--blue))',
       // Replace with your own file, e.g. 'assets/projects/brand-identity.jpg'
-      img: 'https://picsum.photos/seed/pixelaura-branding/500/700'
+      img: 'https://picsum.photos/seed/pixelaura-branding/500/700',
+      caseStudy: {
+        problem: 'A pre-launch startup had a product but no visual identity — no logo, no color system, nothing consistent across their pitch deck and landing page.',
+        process: 'Ran a short brand discovery pass, explored 3 logo directions, then built out a compact identity system: primary mark, color palette, type pairing and usage rules.',
+        result: 'Delivered a flexible logo + identity kit the founders could apply themselves across deck, site and social without needing a designer for every asset.'
+      }
     },
     {
       icon: '🏋️',
@@ -243,7 +248,12 @@ document.addEventListener('DOMContentLoaded', () => {
       sub: 'Marketing campaign',
       tags: ['Flyer design', 'Typography', 'Print'],
       grad: 'linear-gradient(160deg, var(--violet), var(--purple))',
-      img: 'https://picsum.photos/seed/pixelaura-fitness/500/700'
+      img: 'https://picsum.photos/seed/pixelaura-fitness/500/700',
+      caseStudy: {
+        problem: 'A local fitness studio needed a print flyer for a membership push, but wanted it to feel high-energy rather than another generic gym ad.',
+        process: 'Built around bold cropped photography, a strong diagonal grid and a limited high-contrast palette to make the flyer readable from a distance.',
+        result: 'A print-ready flyer used across the studio and nearby noticeboards, with a matching Instagram story version for the same campaign.'
+      }
     },
     {
       icon: '☕',
@@ -251,7 +261,12 @@ document.addEventListener('DOMContentLoaded', () => {
       sub: 'Social media',
       tags: ['Social media', 'Campaign', 'Instagram'],
       grad: 'linear-gradient(160deg, var(--blue), var(--cyan))',
-      img: 'https://picsum.photos/seed/pixelaura-cafe/500/700'
+      img: 'https://picsum.photos/seed/pixelaura-cafe/500/700',
+      caseStudy: {
+        problem: 'A café\'s Instagram feed looked inconsistent — different fonts, filters and layouts post to post — which made the brand feel unfinished.',
+        process: 'Designed a reusable post and story template system with fixed type, color and photo-treatment rules, so future posts stay on-brand with minimal effort.',
+        result: 'A cohesive, recognizable feed and a template set the café still uses for weekly specials and events.'
+      }
     },
     {
       icon: '🧴',
@@ -259,7 +274,12 @@ document.addEventListener('DOMContentLoaded', () => {
       sub: 'Organic skincare line',
       tags: ['Packaging', 'Labels', 'Mockups'],
       grad: 'linear-gradient(160deg, var(--cyan), var(--violet))',
-      img: 'https://picsum.photos/seed/pixelaura-skincare/500/700'
+      img: 'https://picsum.photos/seed/pixelaura-skincare/500/700',
+      caseStudy: {
+        problem: 'An organic skincare line\'s packaging looked generic and didn\'t communicate "premium" or "natural" at shelf level.',
+        process: 'Explored a muted, botanical color palette and minimal serif/sans pairing, then mocked up labels across the full product range for consistency.',
+        result: 'Packaging that reads premium and organic at a glance, with mockups the client used directly for manufacturer approval.'
+      }
     },
     {
       icon: '📇',
@@ -267,7 +287,12 @@ document.addEventListener('DOMContentLoaded', () => {
       sub: 'Studio stationery',
       tags: ['Print', 'Stationery', 'Branding'],
       grad: 'linear-gradient(160deg, var(--purple), var(--cyan))',
-      img: 'https://picsum.photos/seed/pixelaura-cards/500/700'
+      img: 'https://picsum.photos/seed/pixelaura-cards/500/700',
+      caseStudy: {
+        problem: 'A small studio needed stationery — business cards, letterhead — that matched a brand refresh they\'d just gone through.',
+        process: 'Carried the new brand\'s color and type system onto a double-sided card layout, keeping enough white space to feel premium rather than busy.',
+        result: 'A print-ready stationery set that reinforced the studio\'s new identity in every handoff meeting.'
+      }
     },
     {
       icon: '📱',
@@ -275,7 +300,12 @@ document.addEventListener('DOMContentLoaded', () => {
       sub: 'Store & social assets',
       tags: ['UI graphics', 'Social media', 'Mockups'],
       grad: 'linear-gradient(160deg, var(--blue), var(--purple))',
-      img: 'https://picsum.photos/seed/pixelaura-app/500/700'
+      img: 'https://picsum.photos/seed/pixelaura-app/500/700',
+      caseStudy: {
+        problem: 'An app launch needed store screenshots and social promo assets, but the raw UI screens alone didn\'t sell the product\'s value.',
+        process: 'Framed key screens in device mockups, added short benefit-led captions, and built matching square/story variants for launch day posts.',
+        result: 'A ready-to-publish promo kit covering App Store screenshots and the first week of launch social content.'
+      }
     },
   ];
 
@@ -305,6 +335,14 @@ document.addEventListener('DOMContentLoaded', () => {
       features: ['Unlimited design requests', 'Social media + print coverage', 'Dedicated turnaround windows', 'Monthly strategy check-in'],
       featured: false
     },
+  ];
+
+  const currentlyWorkingOn = [
+    'Café rebrand — logo & packaging',
+    'Wedding invitation suite',
+    'Fitness studio social kit',
+    'Startup pitch deck redesign',
+    'Skincare label refresh'
   ];
 
   const reviews = [
@@ -351,6 +389,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const doubledReversed = [...reversedTools, ...reversedTools];
   marqueeA.innerHTML = doubledTools.map(toolBadge).join('');
   marqueeB.innerHTML = doubledReversed.map(toolBadge).join('');
+
+  /* ---------------------------------------------------------
+     RENDER: "currently working on" status ticker
+  --------------------------------------------------------- */
+  const statusTickerTrack = document.getElementById('statusTickerTrack');
+  if (statusTickerTrack){
+    const tickerItem = (label, i) => `
+      <span class="status-ticker-item">
+        <span class="status-ticker-dot" aria-hidden="true"></span>
+        ${i === 0 ? '<strong>Currently designing:</strong>&nbsp;' : ''}${label}
+      </span>`;
+    const doubledTicker = [...currentlyWorkingOn, ...currentlyWorkingOn];
+    statusTickerTrack.innerHTML = doubledTicker.map((label, i) => tickerItem(label, i % currentlyWorkingOn.length)).join('');
+  }
 
   /* ---------------------------------------------------------
      RENDER: services carousel
@@ -546,6 +598,42 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
   /* ---------------------------------------------------------
+     CASE STUDY MODAL — Problem / Process / Result for a project
+  --------------------------------------------------------- */
+  const caseStudyModal = document.getElementById('caseStudyModal');
+  const caseStudyImg = document.getElementById('caseStudyImg');
+  const caseStudyTitle = document.getElementById('caseStudyTitle');
+  const caseStudySub = document.getElementById('caseStudySub');
+  const caseStudyProblem = document.getElementById('caseStudyProblem');
+  const caseStudyProcess = document.getElementById('caseStudyProcess');
+  const caseStudyResult = document.getElementById('caseStudyResult');
+  const caseStudyClose = document.getElementById('caseStudyClose');
+
+  function openCaseStudy(p){
+    if (!caseStudyModal || !p) return;
+    caseStudyImg.src = p.img;
+    caseStudyImg.alt = p.title;
+    caseStudyTitle.textContent = p.title;
+    caseStudySub.textContent = p.sub || '';
+    const cs = p.caseStudy || {};
+    caseStudyProblem.textContent = cs.problem || 'Details coming soon.';
+    caseStudyProcess.textContent = cs.process || 'Details coming soon.';
+    caseStudyResult.textContent = cs.result || 'Details coming soon.';
+    caseStudyModal.classList.add('active');
+    caseStudyModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('lightbox-open');
+  }
+  function closeCaseStudy(){
+    if (!caseStudyModal) return;
+    caseStudyModal.classList.remove('active');
+    caseStudyModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('lightbox-open');
+  }
+  if (caseStudyClose) caseStudyClose.addEventListener('click', closeCaseStudy);
+  if (caseStudyModal) caseStudyModal.addEventListener('click', e => { if (e.target === caseStudyModal) closeCaseStudy(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCaseStudy(); });
+
+  /* ---------------------------------------------------------
      COVERFLOW CONTROLLER — center-focused glass carousel
   --------------------------------------------------------- */
   function initCoverflow(root){
@@ -626,8 +714,11 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="pf-caption">
         <span class="cf-title pf-title">${p.title}</span>
         <span class="cf-sub pf-sub">${p.sub || (p.tags && p.tags[0]) || ''}</span>
+        <div class="pf-tags">
+          ${(p.tags || []).map(t => `<span class="pf-tag">${t}</span>`).join('')}
+        </div>
       </div>
-      <div class="cf-zoom-hint pf-zoom-hint"><span>View project ↗</span></div>
+      <div class="cf-zoom-hint pf-zoom-hint"><span>View case study ↗</span></div>
     </div>
   `;
   let projectsHTML = '';
@@ -729,9 +820,11 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', () => { manualNudge -= spacing; pause(); });
     nextBtn.addEventListener('click', () => { manualNudge += spacing; pause(); });
     toggleBtn.addEventListener('click', () => { autoplay ? pause() : play(); });
-    cards.forEach((card) => card.addEventListener('click', () => {
+    cards.forEach((card, i) => card.addEventListener('click', (e) => {
+      if (e.target.closest('.cf-upload-btn') || e.target.closest('.cf-reset-btn')) return;
       if (card.classList.contains('pf-active')){
-        openLightbox(card);
+        const projectData = projects[i % projects.length];
+        openCaseStudy(projectData);
         pause();
       }
     }));
@@ -756,7 +849,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <ul class="price-features">
         ${p.features.map(f => `<li>${f}</li>`).join('')}
       </ul>
-      <a href="#contact" class="btn ${p.featured ? 'btn-primary' : 'btn-ghost'}">Get a quote</a>
+      <a href="#contact" class="btn ${p.featured ? 'btn-primary' : 'btn-ghost'} magnetic">Get a quote</a>
     </div>
   `).join('');
 
@@ -958,11 +1051,37 @@ document.addEventListener('DOMContentLoaded', () => {
   const nav = document.getElementById('nav');
   const navBurger = document.getElementById('navBurger');
   const navLinks = document.getElementById('navLinks');
+  const navScrollProgress = document.getElementById('navScrollProgress');
   const navLinkEls = [...document.querySelectorAll('.nav-link')];
   const sections = navLinkEls.map(l => document.querySelector(l.getAttribute('href')));
 
+  /* Grain reacts to scroll speed: flickers faster/stronger the
+     faster you scroll, settles back to a calm base when idle. */
+  const noiseOverlay = document.querySelector('.noise-overlay');
+  let lastScrollY = window.scrollY;
+  let lastScrollT = performance.now();
+  let noiseDecayTimer = null;
+
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 30);
+
+    if (navScrollProgress){
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+      navScrollProgress.style.width = `${Math.min(100, Math.max(0, pct))}%`;
+    }
+
+    if (noiseOverlay){
+      const now = performance.now();
+      const dt = Math.max(1, now - lastScrollT);
+      const speed = Math.abs(window.scrollY - lastScrollY) / dt; // px per ms
+      lastScrollY = window.scrollY;
+      lastScrollT = now;
+      const opacity = Math.min(0.11, 0.035 + speed * 0.9);
+      noiseOverlay.style.opacity = opacity.toFixed(3);
+      clearTimeout(noiseDecayTimer);
+      noiseDecayTimer = setTimeout(() => { noiseOverlay.style.opacity = '0.035'; }, 220);
+    }
 
     let current = sections[0];
     const scrollPos = window.scrollY + window.innerHeight * 0.35;
@@ -1068,6 +1187,167 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ---------------------------------------------------------
+     CUSTOM CURSOR (pen mark, desktop only, follows precisely)
+  --------------------------------------------------------- */
+  const customCursor = document.getElementById('customCursor');
+  if (customCursor && window.matchMedia('(pointer:fine)').matches){
+    document.documentElement.classList.add('custom-cursor-on');
+    customCursor.classList.add('active');
+    window.addEventListener('pointermove', e => {
+      customCursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+      const target = e.target.closest('a, button, input, textarea, select, [role="button"]');
+      customCursor.classList.toggle('pointer', !!target);
+    });
+    document.addEventListener('mouseleave', () => customCursor.classList.remove('active'));
+    document.addEventListener('mouseenter', () => customCursor.classList.add('active'));
+  } else if (customCursor){
+    customCursor.style.display = 'none';
+  }
+
+  /* ---------------------------------------------------------
+     FAVICON — swaps to a "come back" mark while the tab is
+     unfocused, restores the normal mark on return
+  --------------------------------------------------------- */
+  (function initFaviconBlink(){
+    const favicon = document.getElementById('favicon');
+    if (!favicon) return;
+    const normalIcon = favicon.href;
+    const awayIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23171430'/%3E%3Ctext x='32' y='44' font-family='Arial,sans-serif' font-weight='700' font-size='34' fill='%233ddc84' text-anchor='middle'%3E!%3C/text%3E%3C/svg%3E";
+    let blinkTimer = null;
+    let blinkOn = false;
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden){
+        document.title = '👋 Come back! — Pixel Aura Studio';
+        blinkTimer = setInterval(() => {
+          blinkOn = !blinkOn;
+          favicon.href = blinkOn ? awayIcon : normalIcon;
+        }, 900);
+      } else {
+        clearInterval(blinkTimer);
+        favicon.href = normalIcon;
+        document.title = 'Shraddha — Pixel Aura Studio | Graphic Designer';
+      }
+    });
+  })();
+
+  /* ---------------------------------------------------------
+     CONFETTI — shared by the logo easter egg and Konami code
+  --------------------------------------------------------- */
+  const confettiColors = ['#97b7f3', '#c3d3fb', '#b06bff', '#5b558a', '#3ddc84'];
+  function burstConfetti(){
+    const count = 70;
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < count; i++){
+      const piece = document.createElement('span');
+      piece.className = 'confetti-piece';
+      const x = 50 + (Math.random() * 30 - 15);
+      const dx = (Math.random() * 260 - 130);
+      const dy = 100 + Math.random() * 60;
+      const rot = Math.random() * 720 - 360;
+      const size = 6 + Math.random() * 6;
+      const color = confettiColors[i % confettiColors.length];
+      const delay = Math.random() * 120;
+      piece.style.left = `${x}vw`;
+      piece.style.top = '18vh';
+      piece.style.width = `${size}px`;
+      piece.style.height = `${size * 0.6}px`;
+      piece.style.background = color;
+      piece.style.setProperty('--dx', `${dx}px`);
+      piece.style.setProperty('--dy', `${dy}vh`);
+      piece.style.setProperty('--rot', `${rot}deg`);
+      piece.style.animationDelay = `${delay}ms`;
+      frag.appendChild(piece);
+      setTimeout(() => piece.remove(), 2000 + delay);
+    }
+    document.body.appendChild(frag);
+  }
+
+  /* ---------------------------------------------------------
+     LOGO EASTER EGG — click the logo 5x quickly for confetti
+  --------------------------------------------------------- */
+  (function initLogoEasterEgg(){
+    const logos = document.querySelectorAll('.nav-logo');
+    if (!logos.length) return;
+    let clicks = 0;
+    let resetTimer = null;
+
+    logos.forEach(logo => {
+      logo.addEventListener('click', (e) => {
+        clicks++;
+        clearTimeout(resetTimer);
+        resetTimer = setTimeout(() => { clicks = 0; }, 1400);
+        if (clicks >= 5){
+          e.preventDefault();
+          clicks = 0;
+          burstConfetti();
+        }
+      });
+    });
+  })();
+
+  /* Konami code — classic sequence also triggers confetti */
+  (function initKonamiCode(){
+    const sequence = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    let pos = 0;
+    document.addEventListener('keydown', (e) => {
+      const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      if (key === sequence[pos]){
+        pos++;
+        if (pos === sequence.length){
+          pos = 0;
+          burstConfetti();
+        }
+      } else {
+        pos = (key === sequence[0]) ? 1 : 0;
+      }
+    });
+  })();
+
+  /* ---------------------------------------------------------
+     SOUND TOGGLE — synthesized UI clicks/hovers, off by default
+  --------------------------------------------------------- */
+  (function initSoundToggle(){
+    const btn = document.getElementById('soundToggle');
+    if (!btn) return;
+    let audioCtx = null;
+    let soundOn = false;
+
+    function ensureCtx(){
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    function tone(freq, duration, gainPeak){
+      if (!soundOn) return;
+      const ctx = ensureCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(gainPeak, ctx.currentTime + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + duration);
+    }
+
+    btn.addEventListener('click', () => {
+      soundOn = !soundOn;
+      btn.setAttribute('aria-pressed', String(soundOn));
+      btn.textContent = soundOn ? '🔊' : '🔇';
+      if (soundOn) { ensureCtx(); tone(660, 0.12, 0.08); }
+    });
+
+    document.querySelectorAll('.nav-link, .btn, .reel-social-btn, .social-chip').forEach(el => {
+      el.addEventListener('mouseenter', () => tone(520, 0.06, 0.03));
+      el.addEventListener('click', () => tone(340, 0.09, 0.05));
+    });
+  })();
+
+  /* ---------------------------------------------------------
      REVEAL ON SCROLL
   --------------------------------------------------------- */
   const revealEls = document.querySelectorAll('[data-reveal]');
@@ -1082,6 +1362,44 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { threshold: 0.15 });
   revealEls.forEach(el => io.observe(el));
+
+  /* ---------------------------------------------------------
+     ANIMATED STAT COUNTERS — count up from 0 when scrolled into view
+  --------------------------------------------------------- */
+  (function initStatCounters(){
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const counters = document.querySelectorAll('.stat-num[data-count-to]');
+    if (!counters.length) return;
+
+    function animateCount(el){
+      const target = parseInt(el.dataset.countTo, 10) || 0;
+      const suffix = el.dataset.suffix || '';
+      if (reduceMotion){
+        el.textContent = target + suffix;
+        return;
+      }
+      const duration = 1400;
+      const start = performance.now();
+      function tick(now){
+        const progress = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+        el.textContent = Math.round(target * eased) + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+        else el.textContent = target + suffix;
+      }
+      requestAnimationFrame(tick);
+    }
+
+    const counterIO = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting){
+          animateCount(entry.target);
+          counterIO.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(el => counterIO.observe(el));
+  })();
 
   /* ---------------------------------------------------------
      CONTACT FORM — Web3Forms submission
@@ -1135,5 +1453,50 @@ document.addEventListener('DOMContentLoaded', () => {
      FOOTER YEAR
   --------------------------------------------------------- */
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ---------------------------------------------------------
+     MAGNETIC BUTTONS — CTAs pull gently toward the cursor
+  --------------------------------------------------------- */
+  (function initMagneticButtons(){
+    if (!window.matchMedia('(pointer:fine)').matches) return;
+    const strength = 0.3;
+    document.querySelectorAll('.magnetic').forEach(el => {
+      el.addEventListener('mousemove', e => {
+        const rect = el.getBoundingClientRect();
+        const relX = e.clientX - (rect.left + rect.width / 2);
+        const relY = e.clientY - (rect.top + rect.height / 2);
+        el.style.transition = 'transform .12s ease-out';
+        el.style.transform = `translate(${relX * strength}px, ${relY * strength}px)`;
+      });
+      el.addEventListener('mouseleave', () => {
+        el.style.transition = 'transform .5s cubic-bezier(.34,1.56,.64,1)';
+        el.style.transform = 'translate(0,0)';
+      });
+    });
+  })();
+
+  /* ---------------------------------------------------------
+     TILT-ON-HOVER — pricing cards tilt in 3D toward the cursor
+  --------------------------------------------------------- */
+  (function initTiltCards(){
+    if (!window.matchMedia('(pointer:fine)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const maxTilt = 10; // degrees
+    document.querySelectorAll('.price-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const relX = (e.clientX - rect.left) / rect.width - 0.5;
+        const relY = (e.clientY - rect.top) / rect.height - 0.5;
+        const rotateY = relX * maxTilt * 2;
+        const rotateX = -relY * maxTilt * 2;
+        card.style.transition = 'transform .12s ease-out';
+        card.style.transform = `translateY(-6px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transition = 'transform .5s var(--ease)';
+        card.style.transform = 'translateY(0) rotateX(0) rotateY(0)';
+      });
+    });
+  })();
 
 });
