@@ -5,6 +5,62 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------------------------------------------------------
+     INTRO SPLASH SCREEN — plays once on load, then reveals
+     the home page underneath
+  --------------------------------------------------------- */
+  (function initSplashScreen(){
+    const splash = document.getElementById('splashScreen');
+    if (!splash) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.body.classList.add('splash-active');
+
+    // cursor spotlight follows pointer while splash is visible
+    function movePointer(e){
+      splash.style.setProperty('--splash-mx', e.clientX + 'px');
+      splash.style.setProperty('--splash-my', e.clientY + 'px');
+    }
+    window.addEventListener('pointermove', movePointer);
+
+    // ambient drifting pixels
+    const field = document.getElementById('splashPixels');
+    if (field && !reduceMotion) {
+      const COUNT = 26;
+      for (let i = 0; i < COUNT; i++) {
+        const p = document.createElement('div');
+        p.className = 'splash-pixel';
+        const size = 4 + Math.random() * 6;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.bottom = (Math.random() * -20) + 'vh';
+        const duration = 10 + Math.random() * 14;
+        const pdelay = Math.random() * 16;
+        p.style.animationDuration = duration + 's';
+        p.style.animationDelay = '-' + pdelay + 's';
+        field.appendChild(p);
+      }
+    }
+
+    function hideSplash(){
+      splash.classList.add('splash-hide');
+      document.body.classList.remove('splash-active');
+      window.removeEventListener('pointermove', movePointer);
+      setTimeout(() => splash.remove(), 650);
+    }
+
+    // hold on the logo, then reveal the home page
+    const HOLD_MS = reduceMotion ? 400 : 2200;
+    const holdTimer = setTimeout(hideSplash, HOLD_MS);
+
+    // let an impatient visitor skip straight to the home page
+    splash.addEventListener('click', () => {
+      clearTimeout(holdTimer);
+      hideSplash();
+    });
+  })();
+
+  /* ---------------------------------------------------------
      HERO CAPTION — reveal the "Made for / SHRADDHA / role" text
      one piece at a time (label words, then name letters, then
      role words), instead of all appearing at once
@@ -1305,11 +1361,31 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
   /* ---------------------------------------------------------
+     BUTTON RIPPLE — liquid-glass ripple from click point
+  --------------------------------------------------------- */
+  (function initBtnRipple(){
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height) * 1.8;
+        const ripple = document.createElement('span');
+        ripple.className = 'btn-ripple';
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+        ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+        btn.appendChild(ripple);
+        ripple.addEventListener('animationend', () => ripple.remove());
+      });
+    });
+  })();
+
+  /* ---------------------------------------------------------
      SOUND TOGGLE — synthesized UI clicks/hovers, off by default
   --------------------------------------------------------- */
   (function initSoundToggle(){
     const btn = document.getElementById('soundToggle');
     if (!btn) return;
+    const wave = document.getElementById('soundWave');
     let audioCtx = null;
     let soundOn = false;
 
@@ -1338,6 +1414,7 @@ document.addEventListener('DOMContentLoaded', () => {
       soundOn = !soundOn;
       btn.setAttribute('aria-pressed', String(soundOn));
       btn.textContent = soundOn ? '🔊' : '🔇';
+      if (wave) wave.classList.toggle('is-playing', soundOn);
       if (soundOn) { ensureCtx(); tone(660, 0.12, 0.08); }
     });
 

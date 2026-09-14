@@ -13,6 +13,20 @@
 </head>
 <body>
 
+<!-- ============ INTRO SPLASH SCREEN ============ -->
+<div class="splash-screen" id="splashScreen">
+  <div class="splash-backdrop"><div class="splash-blob splash-b1"></div><div class="splash-blob splash-b2"></div></div>
+  <div class="splash-grain"></div>
+  <div class="splash-pixels" id="splashPixels"></div>
+  <div class="splash-spotlight"></div>
+
+  <div class="splash-stage">
+    <div class="splash-logo-frame">
+      <img src="assets/splash-logo.jpg" alt="Pixel Aura Studio logo">
+    </div>
+  </div>
+</div>
+
 <div class="noise-overlay" aria-hidden="true"></div>
 <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 <div class="custom-cursor" id="customCursor" aria-hidden="true">
@@ -21,6 +35,7 @@
     <path d="M14.5 5.5L18.5 9.5" stroke="currentColor" stroke-width="1.6"/>
   </svg>
 </div>
+
 
 <!-- ============ NAV ============ -->
 <header class="nav" id="nav">
@@ -53,6 +68,12 @@
     <a href="#contact" class="btn btn-primary btn-small nav-cta magnetic">Let's talk</a>
 
     <button class="sound-toggle" id="soundToggle" aria-label="Toggle interface sounds" aria-pressed="false" title="Toggle sound">🔇</button>
+    <span class="sound-wave" id="soundWave" aria-hidden="true">
+      <span class="sound-wave-bar"></span>
+      <span class="sound-wave-bar"></span>
+      <span class="sound-wave-bar"></span>
+      <span class="sound-wave-bar"></span>
+    </span>
 
     <button class="nav-burger" id="navBurger" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
