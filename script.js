@@ -209,10 +209,10 @@ document.addEventListener('DOMContentLoaded', () => {
       slug: 'brochure-design',
       desc: 'Multi-fold brochures that guide the reader through a story, product or service.',
       samples: [
-        { icon: '🏢', label: 'Company tri-fold', grad: 'linear-gradient(150deg,#4f7cff,#b026ff)' },
-        { icon: '🏨', label: 'Hospitality brochure', grad: 'linear-gradient(150deg,#b026ff,#ff5fa2)' },
-        { icon: '🎓', label: 'Course info brochure', grad: 'linear-gradient(150deg,#22d3ee,#4f7cff)' },
-        { icon: '🩺', label: 'Clinic services brochure', grad: 'linear-gradient(150deg,#8b2ff7,#4f2f9e)' },
+        { icon: '🤖', label: 'AI Solutions tri-fold brochure', grad: 'linear-gradient(150deg,#0b2a6b,#1e88e5)' },
+        { icon: '🐾', label: 'Paws & Hope animal welfare brochure', grad: 'linear-gradient(150deg,#2f5233,#c9b68a)' },
+        { icon: '🏛️', label: 'Royal Elegance banquet hall brochure', grad: 'linear-gradient(150deg,#3a0f1a,#b8860b)' },
+        { icon: '🚀', label: 'Mars Habitat 5-panel brochure', grad: 'linear-gradient(150deg,#e8561a,#1a1a1a)' },
       ]
     },
     {
@@ -231,10 +231,10 @@ document.addEventListener('DOMContentLoaded', () => {
       slug: 'business-cards',
       desc: 'A compact, memorable card that carries your brand\'s color and type system in your pocket.',
       samples: [
-        { icon: '💳', label: 'Studio double-sided card', grad: 'linear-gradient(150deg,#b026ff,#ff5fa2)' },
-        { icon: '🧑‍💼', label: 'Consultant card', grad: 'linear-gradient(150deg,#4f7cff,#8b2ff7)' },
-        { icon: '🍽️', label: 'Café brand card', grad: 'linear-gradient(150deg,#22d3ee,#0e7c6b)' },
-        { icon: '🏗️', label: 'Agency card set', grad: 'linear-gradient(150deg,#8b2ff7,#4f2f9e)' },
+        { icon: '🏠', label: 'Aurora Estates real estate card', grad: 'linear-gradient(150deg,#e6c200,#111111)' },
+        { icon: '💻', label: 'ByteForge software agency card', grad: 'linear-gradient(150deg,#0b1f3a,#22d3ee)' },
+        { icon: '📷', label: 'Snapsphere photography card', grad: 'linear-gradient(150deg,#d4af37,#1a1a1a)' },
+        { icon: '🌿', label: 'GreenCart grocery card', grad: 'linear-gradient(150deg,#2f8f3a,#a8d672)' },
       ]
     },
     {
@@ -495,6 +495,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const tried = parseInt(img.dataset.tried || '0', 10) + 1;
     if (tried >= CF_IMG_EXTS.length){
       img.style.display = 'none';
+      const card = img.closest('.cf-card');
+      if (card) card.classList.add('cf-no-img');
       return;
     }
     img.dataset.tried = String(tried);

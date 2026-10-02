@@ -2495,3 +2495,9 @@ body.splash-active{ overflow: hidden; }
   .splash-logo-frame{ opacity: 1 !important; filter: none !important; transform: none !important; }
   .splash-screen{ transition: none; }
 }
+
+/* ---------- Sample designs: show the image only (no icon / title / subtitle overlay) ---------- */
+.showcase-block .cf-card:not(.cf-no-img) .cf-icon,
+.showcase-block .cf-card:not(.cf-no-img) .cf-title,
+.showcase-block .cf-card:not(.cf-no-img) .cf-sub{ display: none; }
+.showcase-block .cf-card:not(.cf-no-img)::after{ display: none; }
