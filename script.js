@@ -290,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
       sub: 'Concept startup',
       tags: ['Branding', 'Logo', 'Identity system'],
       grad: 'linear-gradient(160deg, var(--purple), var(--blue))',
-      // Replace with your own file, e.g. 'assets/projects/brand-identity.jpg'
+      // Replace with your own file, e.g. 'assets/brand-identity.jpg'
       img: 'https://picsum.photos/seed/pixelaura-branding/500/700',
       caseStudy: {
         problem: 'A pre-launch startup had a product but no visual identity — no logo, no color system, nothing consistent across their pitch deck and landing page.',
@@ -361,6 +361,32 @@ document.addEventListener('DOMContentLoaded', () => {
         problem: 'An app launch needed store screenshots and social promo assets, but the raw UI screens alone didn\'t sell the product\'s value.',
         process: 'Framed key screens in device mockups, added short benefit-led captions, and built matching square/story variants for launch day posts.',
         result: 'A ready-to-publish promo kit covering App Store screenshots and the first week of launch social content.'
+      }
+    },
+    {
+      icon: '🎓',
+      title: 'BrightFuture Academy',
+      sub: 'Education brochure',
+      tags: ['Brochure design', 'Layout', 'Print'],
+      grad: 'linear-gradient(160deg, var(--violet), var(--cyan))',
+      img: 'assets/brightfuture-brochure.png',
+      caseStudy: {
+        problem: 'BrightFuture Academy needed a brochure that explained its programs, student resources and results clearly, while feeling energetic and approachable for students and parents.',
+        process: 'Built a multi-panel layout around a navy, teal and yellow palette, with bold headings, icon-led sections and real-feeling photography so each panel is easy to scan.',
+        result: 'A print-ready, multi-panel brochure covering the academy\'s story, programs, resources, impact, testimonials and contact details in one cohesive piece.'
+      }
+    },
+    {
+      icon: '🌿',
+      title: 'Herbaline shampoo poster',
+      sub: 'Product advertising',
+      tags: ['Poster design', 'Packaging', 'Advertising'],
+      grad: 'linear-gradient(160deg, var(--purple), var(--blue))',
+      img: 'assets/herbaline-shampoo-poster.png',
+      caseStudy: {
+        problem: 'Herbaline Natural Care needed a product poster for its herbal shampoo that communicated natural ingredients and visible hair benefits at a glance.',
+        process: 'Centered the bottle as the hero, paired it with a soft green nature backdrop and strong headline typography, and used icon badges to call out key benefits clearly.',
+        result: 'A clean, on-brand poster that highlights the product, its ingredients and its benefits, ready for social media and print promotion.'
       }
     },
   ];
